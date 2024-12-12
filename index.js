@@ -9,7 +9,22 @@ const authenticateToken = require('./Middleware/CheckPassport');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-
+// CORS headers
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,PATCH,PUT,POST,DELETE");
+  res.header("Access-Control-Expose-Headers", "Content-Length");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Accept, Authorization,x-auth-token, Content-Type, X-Requested-With, Range"
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  } else {
+    return next();
+  }
+});
 // MongoDB connection
 mongoose.connect('mongodb+srv://mohamed:777888@cluster0.dxkopeq.mongodb.net/sportsDB', {
     
